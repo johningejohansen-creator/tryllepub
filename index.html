@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tryllepub – Verden i Bergen</title>
+<meta name="description" content="Tryllepub: magi på intimscenen og helt inntil bordet ditt. Verden i Bergen i Øvregaten. Kun 50 plasser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #15101c;
+    --bg-2: #1f1829;
+    --card: #241c30;
+    --line: #3a2f4a;
+    --text: #f3ece0;
+    --muted: #b7aac4;
+    --gold: #e2b65c;
+    --gold-deep: #b8892f;
+    --ok: #8fd19e;
+    --err: #ff9b8a;
+    --vipps: #ff5b24;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background:
+      radial-gradient(1200px 600px at 50% -200px, #3a2450 0%, transparent 70%),
+      var(--bg);
+    color: var(--text);
+    font: 16px/1.55 "Work Sans", system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 48px 16px 64px; }
+
+  header { text-align: center; margin-bottom: 36px; }
+  .eyebrow {
+    color: var(--gold); letter-spacing: .22em; text-transform: uppercase;
+    font-size: 12px; font-weight: 600; margin: 0 0 14px;
+  }
+  h1 {
+    font-family: "DM Serif Display", Georgia, serif; font-weight: 400;
+    font-size: clamp(48px, 13vw, 84px); line-height: .95; margin: 0;
+  }
+  h1 em { color: var(--gold); }
+  .lede { color: var(--muted); font-size: 18px; margin: 18px auto 0; max-width: 30em; }
+
+  .info {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 14px;
+    overflow: hidden; margin-bottom: 28px;
+  }
+  .info div { background: var(--bg-2); padding: 14px 12px; text-align: center; }
+  .info b { display: block; font-family: "DM Serif Display", serif; font-weight: 400; font-size: 20px; }
+  .info span { color: var(--muted); font-size: 13px; }
+
+  .counter {
+    text-align: center; padding: 22px 16px; border: 1px solid var(--gold-deep);
+    border-radius: 14px; margin-bottom: 28px;
+    background: linear-gradient(180deg, rgba(226,182,92,.08), transparent);
+  }
+  .counter .num {
+    font-family: "DM Serif Display", serif; font-size: 64px; line-height: 1; color: var(--gold);
+  }
+  .counter .lbl { color: var(--muted); margin-top: 6px; }
+  .bar { height: 6px; background: var(--line); border-radius: 99px; margin: 16px auto 0; max-width: 320px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .6s ease; }
+
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px 20px; }
+  h2 { font-family: "DM Serif Display", serif; font-weight: 400; font-size: 28px; margin: 0 0 18px; }
+
+  label { display: block; font-weight: 500; font-size: 14px; margin: 0 0 6px; }
+  .field { margin-bottom: 16px; }
+  input[type=text], input[type=email], input[type=tel], select {
+    width: 100%; padding: 12px 14px; font: inherit; color: var(--text);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+  }
+  input:focus, select:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: transparent; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+  .stepper { display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 6px; }
+  .stepper button {
+    width: 36px; height: 36px; border-radius: 8px; border: 0; cursor: pointer;
+    background: var(--bg-2); color: var(--text); font-size: 20px; line-height: 1;
+  }
+  .stepper button:hover { background: var(--line); }
+  .stepper output { font-weight: 600; font-size: 18px; min-width: 2ch; text-align: center; }
+  .price { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+  .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 14px; color: var(--muted); }
+  .check input { margin-top: 3px; accent-color: var(--gold); width: 18px; height: 18px; flex: none; }
+
+  .total { display: flex; justify-content: space-between; align-items: baseline;
+    border-top: 1px solid var(--line); padding-top: 16px; margin: 20px 0 16px; }
+  .total b { font-family: "DM Serif Display", serif; font-weight: 400; font-size: 30px; color: var(--gold); }
+
+  .btn {
+    width: 100%; padding: 15px; border: 0; border-radius: 12px; cursor: pointer;
+    background: var(--gold); color: #1a1208; font: 600 17px "Work Sans", sans-serif;
+  }
+  .btn:hover { background: #ecc574; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .msg { margin-top: 12px; font-size: 14px; min-height: 1.2em; }
+  .msg.err { color: var(--err); }
+
+  .done { display: none; text-align: center; }
+  .done.show { display: block; }
+  .done .tick { font-size: 40px; color: var(--ok); }
+  .vipps {
+    margin: 20px 0; padding: 20px; border-radius: 14px; background: var(--vipps); color: #fff;
+  }
+  .vipps .n { font-family: "DM Serif Display", serif; font-size: 44px; line-height: 1.1; letter-spacing: .02em; }
+  .vipps .amt { font-size: 20px; font-weight: 600; margin-top: 4px; }
+  .vipps .ref { margin-top: 10px; font-size: 14px; opacity: .95; }
+  .copy { background: rgba(255,255,255,.2); color: #fff; border: 0; border-radius: 8px;
+    padding: 6px 12px; font: 500 13px "Work Sans", sans-serif; cursor: pointer; margin-top: 10px; }
+
+  .notes { color: var(--muted); font-size: 14px; margin-top: 28px; }
+  .notes p { margin: 6px 0; }
+  footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 36px; }
+  footer a { color: var(--gold); }
+
+  @media (max-width: 420px) {
+    .info { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Syv Fjell Magi presenterer</p>
+    <h1>Trylle<em>pub</em></h1>
+    <p class="lede">Magi fra intimscenen og tryllekunstnere helt inntil bordet ditt – i et lokale med plass til bare 50.</p>
+  </header>
+
+  <div class="info">
+    <div><b id="infoDato">11. nov</b><span id="infoDag">onsdag</span></div>
+    <div><b>Verden i Bergen</b><span>Øvregaten</span></div>
+    <div><b>200 kr</b><span>Student 100 kr</span></div>
+  </div>
+
+  <div class="counter" aria-live="polite">
+    <div class="num" id="igjen">–</div>
+    <div class="lbl" id="igjenTekst">plasser igjen av 50</div>
+    <div class="bar"><i id="bar"></i></div>
+  </div>
+
+  <form class="card" id="skjema" novalidate>
+    <h2>Meld deg på</h2>
+
+    <div class="field" id="forestillingFelt">
+      <label for="forestilling">Forestilling</label>
+      <select id="forestilling"></select>
+    </div>
+
+    <div class="field">
+      <label for="navn">Navn</label>
+      <input type="text" id="navn" autocomplete="name" required>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="epost">E-post</label>
+        <input type="email" id="epost" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="mobil">Mobil</label>
+        <input type="tel" id="mobil" autocomplete="tel" inputmode="tel">
+      </div>
+    </div>
+    <p class="hint" style="margin:-8px 0 16px">Fyll inn minst én av dem, så vi kan nå deg om noe endrer seg.</p>
+
+    <div class="row">
+      <div class="field">
+        <label>Ordinær</label>
+        <div class="stepper" data-key="ordinaer">
+          <button type="button" data-d="-1" aria-label="Færre ordinære billetter">−</button>
+          <output id="ordinaer">1</output>
+          <button type="button" data-d="1" aria-label="Flere ordinære billetter">+</button>
+        </div>
+        <p class="price">200 kr</p>
+      </div>
+      <div class="field">
+        <label>Student</label>
+        <div class="stepper" data-key="student">
+          <button type="button" data-d="-1" aria-label="Færre studentbilletter">−</button>
+          <output id="student">0</output>
+          <button type="button" data-d="1" aria-label="Flere studentbilletter">+</button>
+        </div>
+        <p class="price">100 kr – vis gyldig studentbevis</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="check">
+        <input type="checkbox" id="nyhetsbrev">
+        <span>Ja, send meg informasjon om neste Tryllepub på e-post eller SMS. Du kan melde deg av når som helst.</span>
+      </label>
+    </div>
+
+    <div class="total"><span>Å betale</span><b id="sum">200 kr</b></div>
+
+    <button class="btn" type="submit" id="send">Meld meg på</button>
+    <p class="msg" id="msg" role="alert"></p>
+  </form>
+
+  <section class="card done" id="ferdig" aria-live="polite">
+    <div class="tick">✓</div>
+    <h2>Du er påmeldt!</h2>
+    <p>Fullfør ved å betale med Vipps. Plassen er din når betalingen er mottatt.</p>
+    <div class="vipps">
+      <div>Vipps til</div>
+      <div class="n">#67002</div>
+      <div class="amt" id="vippsSum">200 kr</div>
+      <div class="ref">Skriv i meldingsfeltet: <b id="vippsRef">Tryllepub 11.11 – navn</b></div>
+      <button class="copy" type="button" id="kopier">Kopier Vippsnummer</button>
+    </div>
+    <p class="hint">Søk opp 67002 under «Betal» i Vipps-appen. Mottaker er Syv Fjell Magi.</p>
+  </section>
+
+  <div class="notes">
+    <p>🍽 Verden i Bergen serverer mat og drikke fra egen meny – kom gjerne tidlig og spis før showet.</p>
+    <p>👨‍👩‍👧 Under 18 år er velkomne sammen med en voksen.</p>
+  </div>
+
+  <footer>
+    Spørsmål? <a href="mailto:syvfjellmagi@gmail.com">syvfjellmagi@gmail.com</a>
+  </footer>
+</div>
+
+<script>
+/* ===== Innstillinger ===== */
+// Lim inn nettapp-adressen fra Apps Script her (slutter på /exec):
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGeGjc_Dux_SNbjqOEgDac95eIdIQ93UrRo82Dmaam9iQUaBn3w8GEuxAz8I9ZqQRv/exec';
+const KAPASITET = 50;
+const PRIS = { ordinaer: 200, student: 100 };
+const VIPPS = '67002';
+// Legg til nye forestillinger her (dato i formatet ÅÅÅÅ-MM-DD):
+const FORESTILLINGER = [
+  { id: '2026-11-11', navn: 'Onsdag 11. november 2026' },
+];
+/* ========================= */
+
+const $ = id => document.getElementById(id);
+const antall = { ordinaer: 1, student: 0 };
+const demo = !SCRIPT_URL;
+
+// Vis bare kommende forestillinger
+const iDag = new Date(); iDag.setHours(0, 0, 0, 0);
+const kommende = FORESTILLINGER.filter(f => new Date(f.id + 'T23:59') >= iDag);
+const liste = kommende.length ? kommende : FORESTILLINGER.slice(-1);
+liste.forEach(f => {
+  const o = document.createElement('option');
+  o.value = f.id; o.textContent = f.navn;
+  $('forestilling').appendChild(o);
+});
+if (liste.length < 2) $('forestillingFelt').style.display = 'none';
+
+function oppdaterInfo() {
+  const d = new Date($('forestilling').value + 'T12:00');
+  $('infoDato').textContent = d.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' }).replace('.', '');
+  $('infoDag').textContent = d.toLocaleDateString('nb-NO', { weekday: 'long' });
+}
+
+function sum() { return antall.ordinaer * PRIS.ordinaer + antall.student * PRIS.student; }
+function kr(n) { return n.toLocaleString('nb-NO') + ' kr'; }
+
+function visAntall() {
+  $('ordinaer').textContent = antall.ordinaer;
+  $('student').textContent = antall.student;
+  $('sum').textContent = kr(sum());
+}
+
+document.querySelectorAll('.stepper').forEach(s => {
+  s.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const k = s.dataset.key;
+    antall[k] = Math.max(0, Math.min(10, antall[k] + Number(b.dataset.d)));
+    visAntall();
+  });
+});
+
+let igjen = KAPASITET;
+function visIgjen(n) {
+  igjen = n;
+  $('igjen').textContent = n;
+  $('igjenTekst').textContent = n === 0 ? 'Fullt booket' : (n === 1 ? 'plass igjen av ' : 'plasser igjen av ') + KAPASITET;
+  if (n === 0) $('igjenTekst').textContent = 'Fullt booket – følg oss på Instagram for neste dato';
+  $('bar').style.width = ((KAPASITET - n) / KAPASITET * 100) + '%';
+  $('send').disabled = n === 0;
+}
+
+async function hentIgjen() {
+  if (demo) { visIgjen(KAPASITET); return; }
+  try {
+    const r = await fetch(SCRIPT_URL + '?forestilling=' + encodeURIComponent($('forestilling').value));
+    const d = await r.json();
+    if (d.ok) visIgjen(d.igjen);
+  } catch (e) { $('igjen').textContent = '–'; }
+}
+
+$('forestilling').addEventListener('change', () => { oppdaterInfo(); hentIgjen(); });
+
+$('skjema').addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = $('msg'); msg.className = 'msg'; msg.textContent = '';
+  const navn = $('navn').value.trim();
+  const epost = $('epost').value.trim();
+  const mobil = $('mobil').value.trim();
+  const totalt = antall.ordinaer + antall.student;
+
+  let feil = '';
+  if (!navn) feil = 'Skriv inn navnet ditt.';
+  else if (!epost && !mobil) feil = 'Fyll inn e-post eller mobilnummer.';
+  else if (epost && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(epost)) feil = 'Sjekk e-postadressen.';
+  else if (totalt < 1) feil = 'Velg minst én billett.';
+  else if (totalt > igjen) feil = 'Det er bare ' + igjen + ' plasser igjen.';
+  if (feil) { msg.className = 'msg err'; msg.textContent = feil; return; }
+
+  const data = {
+    forestilling: $('forestilling').value, navn, epost, mobil,
+    ordinaer: antall.ordinaer, student: antall.student,
+    nyhetsbrev: $('nyhetsbrev').checked,
+  };
+
+  $('send').disabled = true; $('send').textContent = 'Sender …';
+  try {
+    let svar;
+    if (demo) {
+      await new Promise(r => setTimeout(r, 500));
+      svar = { ok: true, igjen: igjen - totalt, belop: sum() };
+    } else {
+      const r = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data),
+      });
+      svar = await r.json();
+    }
+    if (!svar.ok) {
+      msg.className = 'msg err'; msg.textContent = svar.feil || 'Noe gikk galt. Prøv igjen.';
+      if (typeof svar.igjen === 'number') visIgjen(svar.igjen);
+      return;
+    }
+    visIgjen(svar.igjen);
+    const d = new Date(data.forestilling + 'T12:00');
+    $('vippsSum').textContent = kr(svar.belop);
+    $('vippsRef').textContent = 'Tryllepub ' + d.getDate() + '.' + (d.getMonth() + 1) + ' – ' + navn;
+    $('skjema').style.display = 'none';
+    $('ferdig').classList.add('show');
+    $('ferdig').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (err) {
+    msg.className = 'msg err'; msg.textContent = 'Fikk ikke kontakt. Sjekk nettet og prøv igjen.';
+  } finally {
+    $('send').disabled = igjen === 0; $('send').textContent = 'Meld meg på';
+  }
+});
+
+$('kopier').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(VIPPS); $('kopier').textContent = 'Kopiert!'; }
+  catch (e) { $('kopier').textContent = VIPPS; }
+});
+
+oppdaterInfo(); visAntall(); hentIgjen();
+</script>
+</body>
+</html>
