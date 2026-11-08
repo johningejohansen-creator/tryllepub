@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tryllepub – Verden i Bergen</title>
-<meta name="description" content="Tryllepub: magi på intimscenen og helt inntil bordet ditt. Verden i Bergen i Øvregaten. Kun 50 plasser.">
+<meta name="description" content="Tryllepub: magi på intimscenen og helt inntil bordet ditt. Verden i Bergen i Øvregaten, torsdag 12. november. Gratis prøveforestilling – kun 50 plasser.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -139,9 +139,9 @@
   </header>
 
   <div class="info">
-    <div><b id="infoDato">11. nov</b><span id="infoDag">onsdag</span></div>
+    <div><b id="infoDato">12. nov</b><span id="infoDag">torsdag</span></div>
     <div><b>Verden i Bergen</b><span>Øvregaten</span></div>
-    <div><b>200 kr</b><span>Student 100 kr</span></div>
+    <div><b>Gratis</b><span>Prøveforestilling</span></div>
   </div>
 
   <div class="counter" aria-live="polite">
@@ -175,25 +175,14 @@
     </div>
     <p class="hint" style="margin:-8px 0 16px">Fyll inn minst én av dem, så vi kan nå deg om noe endrer seg.</p>
 
-    <div class="row">
-      <div class="field">
-        <label>Ordinær</label>
-        <div class="stepper" data-key="ordinaer">
-          <button type="button" data-d="-1" aria-label="Færre ordinære billetter">−</button>
-          <output id="ordinaer">1</output>
-          <button type="button" data-d="1" aria-label="Flere ordinære billetter">+</button>
-        </div>
-        <p class="price">200 kr</p>
+    <div class="field">
+      <label>Antall plasser</label>
+      <div class="stepper" data-key="ordinaer">
+        <button type="button" data-d="-1" aria-label="Færre plasser">−</button>
+        <output id="ordinaer">1</output>
+        <button type="button" data-d="1" aria-label="Flere plasser">+</button>
       </div>
-      <div class="field">
-        <label>Student</label>
-        <div class="stepper" data-key="student">
-          <button type="button" data-d="-1" aria-label="Færre studentbilletter">−</button>
-          <output id="student">0</output>
-          <button type="button" data-d="1" aria-label="Flere studentbilletter">+</button>
-        </div>
-        <p class="price">100 kr – vis gyldig studentbevis</p>
-      </div>
+      <p class="price">Gratis – prøveforestilling</p>
     </div>
 
     <div class="field">
@@ -203,7 +192,7 @@
       </label>
     </div>
 
-    <div class="total"><span>Å betale</span><b id="sum">200 kr</b></div>
+    <div class="total"><span>Inngang</span><b>Gratis</b></div>
 
     <button class="btn" type="submit" id="send">Meld meg på</button>
     <p class="msg" id="msg" role="alert"></p>
@@ -212,15 +201,8 @@
   <section class="card done" id="ferdig" aria-live="polite">
     <div class="tick">✓</div>
     <h2>Du er påmeldt!</h2>
-    <p>Fullfør ved å betale med Vipps. Plassen er din når betalingen er mottatt.</p>
-    <div class="vipps">
-      <div>Vipps til</div>
-      <div class="n">#67002</div>
-      <div class="amt" id="vippsSum">200 kr</div>
-      <div class="ref">Skriv i meldingsfeltet: <b id="vippsRef">Tryllepub 11.11 – navn</b></div>
-      <button class="copy" type="button" id="kopier">Kopier Vippsnummer</button>
-    </div>
-    <p class="hint">Søk opp 67002 under «Betal» i Vipps-appen. Mottaker er Syv Fjell Magi.</p>
+    <p>Plassen er din. Dette er en prøveforestilling, så inngangen er gratis – du trenger ikke betale noe.</p>
+    <p>Vi sees på Verden i Bergen torsdag 12. november!</p>
   </section>
 
   <div class="notes">
@@ -242,7 +224,7 @@ const PRIS = { ordinaer: 200, student: 100 };
 const VIPPS = '67002';
 // Legg til nye forestillinger her (dato i formatet ÅÅÅÅ-MM-DD):
 const FORESTILLINGER = [
-  { id: '2026-11-11', navn: 'Onsdag 11. november 2026' },
+  { id: '2026-11-12', navn: 'Torsdag 12. november 2026' },
 ];
 /* ========================= */
 
@@ -272,8 +254,6 @@ function kr(n) { return n.toLocaleString('nb-NO') + ' kr'; }
 
 function visAntall() {
   $('ordinaer').textContent = antall.ordinaer;
-  $('student').textContent = antall.student;
-  $('sum').textContent = kr(sum());
 }
 
 document.querySelectorAll('.stepper').forEach(s => {
@@ -348,9 +328,6 @@ $('skjema').addEventListener('submit', async e => {
       return;
     }
     visIgjen(svar.igjen);
-    const d = new Date(data.forestilling + 'T12:00');
-    $('vippsSum').textContent = kr(svar.belop);
-    $('vippsRef').textContent = 'Tryllepub ' + d.getDate() + '.' + (d.getMonth() + 1) + ' – ' + navn;
     $('skjema').style.display = 'none';
     $('ferdig').classList.add('show');
     $('ferdig').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -361,10 +338,6 @@ $('skjema').addEventListener('submit', async e => {
   }
 });
 
-$('kopier').addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText(VIPPS); $('kopier').textContent = 'Kopiert!'; }
-  catch (e) { $('kopier').textContent = VIPPS; }
-});
 
 oppdaterInfo(); visAntall(); hentIgjen();
 </script>
